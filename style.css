@@ -1,0 +1,14 @@
+.jumbotron {
+    background-image: url('assets/images/PhotoFunia-1539796288.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 100px !important;
+    height: 650px;
+}
+
+#move {
+    margin-top: 375px;
+    color: white !important;
+    text-align: center;
+}
+

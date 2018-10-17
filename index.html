@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Javascript Game</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="offset-lg-3 col-lg-6 jumbotron">
+                <div id="move">
+                <h1 id="targetDiv"></h1>
+                <h2>Letters Guessed: <span id="guessDiv"></span>
+                </h2>
+                <h2>Attempts Left: <span id="attempts"></span>
+                </h2>
+                </div>
+            </div>  
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var computerOptions = ["television", "computer", "monitor", "hardware", "circuit"];
+        var computerChoice = computerOptions[Math.floor(Math.random() * computerOptions.length)];
+        var guess = [];
+        var currentWord = [];
+        var attempts = 10;
+        var dashes = document.getElementById("targetDiv");
+        var guesses = document.getElementById("guessDiv");
+        var att = document.getElementById("attempts")
+
+
+        console.log(computerChoice);
+
+        att.textContent = attempts;
+
+        // looping through the computer's word choice and creating a "_" for each letter in the word and adding it to currentWord array
+        for (var i = 0; i < computerChoice.length; i++) {
+            currentWord[i] = "_";
+            // pushing the dashes we made into the dashes div - will update with click event
+            dashes.textContent = currentWord.join(' ');
+        }
+
+        document.onkeyup = function (event) {
+            var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
+                "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
+            ];
+            var alphaCheck = alphabet.indexOf(event.key);
+
+
+            // looping through the computers choice and finding a match at an index
+            for (var j = 0; j < computerChoice.length; j++) {
+
+                if (computerChoice[j] === event.key) {
+                    // have the key pressed take over the spot of the index in currentWord
+                    currentWord[j] = event.key;
+                    // pushes the content of currentWord into the dashes div
+                    dashes.textContent = currentWord.join(' ');
+                    console.log(currentWord);
+                }
+
+                
+
+            }
+
+            if (computerChoice === currentWord.join('')) {
+                    alert("You win! The winning word was: " + computerChoice);
+                    location.reload();
+                }
+
+            // checking if the key pressed is a letter, and if not need to have them try again without penalty
+            // if (event.key !== alphaCheck) {
+            //     alert("try again")
+
+                // checking to see if guess matches letter in word - if not, it pushes the letter to the guess div and decrements attempts
+                if (computerChoice.indexOf(event.key) == -1) {
+                    // pushing the incorrect event key to the guess var
+                    guess.push(event.key);
+                    // decrementing attempts
+                    attempts--;
+                    // pushing the attempts number to the att var which grabs the attemps div
+                    att.textContent = attempts;
+                    // pushes the incorrect event key to the guesses variable which grabs the guessDiv
+                    guesses.textContent = guess.join(', ');
+                } 
+
+
+
+
+
+                // ending game and refreshing page after a loss - maybe reveal winning word?
+                if (attempts == 0) {
+                    alert("Game over! The winning word was: " + computerChoice);
+                    location.reload();
+                }
+
+
+
+
+
+            }
+        
+    </script>
+
+</body>
+
+</html>
