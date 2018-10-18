@@ -14,14 +14,13 @@
     <div class="container-fluid">
         <div class="row">
             <div class="offset-lg-3 col-lg-6 jumbotron">
-                <div id="move">
-                <h1 id="targetDiv"></h1>
-                <h2>Letters Guessed: <span id="guessDiv"></span>
-                </h2>
-                <h2>Attempts Left: <span id="attempts"></span>
-                </h2>
-                </div>
-            </div>  
+                    <h1 id="targetDiv"></h1>
+                    <h2>Letters Guessed: <span id="guessDiv"></span>
+                    </h2>
+                    <h2>Attempts Left: <span id="attemptNumber"></span>
+                    </h2>
+                    <p id="wrongKey"></p>
+            </div>
         </div>
     </div>
 
@@ -33,7 +32,8 @@
         var attempts = 10;
         var dashes = document.getElementById("targetDiv");
         var guesses = document.getElementById("guessDiv");
-        var att = document.getElementById("attempts")
+        var att = document.getElementById("attemptNumber")
+        var wrongKey = document.getElementById("wrongKey");
 
 
         console.log(computerChoice);
@@ -51,35 +51,27 @@
             var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
                 "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
             ];
+            // checking to see if the key pressed is in the index of the alphabet
             var alphaCheck = alphabet.indexOf(event.key);
 
 
             // looping through the computers choice and finding a match at an index
             for (var j = 0; j < computerChoice.length; j++) {
-
-                if (computerChoice[j] === event.key) {
+                // If letter pressed isn't a letter
+                if (alphaCheck == -1) {
+                    wrongKey.textContent = "Choose an actual letter dummy.";
+                    return;
+                } 
+                else if (computerChoice[j] === event.key) {
+                    wrongKey.textContent = "";
                     // have the key pressed take over the spot of the index in currentWord
                     currentWord[j] = event.key;
                     // pushes the content of currentWord into the dashes div
                     dashes.textContent = currentWord.join(' ');
                     console.log(currentWord);
-                }
-
-                
-
-            }
-
-            if (computerChoice === currentWord.join('')) {
-                    alert("You win! The winning word was: " + computerChoice);
-                    location.reload();
-                }
-
-            // checking if the key pressed is a letter, and if not need to have them try again without penalty
-            // if (event.key !== alphaCheck) {
-            //     alert("try again")
-
-                // checking to see if guess matches letter in word - if not, it pushes the letter to the guess div and decrements attempts
-                if (computerChoice.indexOf(event.key) == -1) {
+                } // checking to see if guess matches letter in word - if not, it pushes the letter to the guess div and decrements attempts
+                else if (computerChoice.indexOf(event.key) == -1) {
+                    wrongKey.textContent = "Guess Again!";
                     // pushing the incorrect event key to the guess var
                     guess.push(event.key);
                     // decrementing attempts
@@ -88,24 +80,52 @@
                     att.textContent = attempts;
                     // pushes the incorrect event key to the guesses variable which grabs the guessDiv
                     guesses.textContent = guess.join(', ');
-                } 
 
-
-
-
-
-                // ending game and refreshing page after a loss - maybe reveal winning word?
-                if (attempts == 0) {
-                    alert("Game over! The winning word was: " + computerChoice);
-                    location.reload();
+                    // ending game and refreshing page after a loss
+                    if (attempts == 0) {
+                        alert("Game over! The winning word was: " + computerChoice);
+                        location.reload();
+                    }
+                    return;
                 }
 
 
 
-
-
             }
-        
+
+            if (guesses.indexOf(event.key)){
+                    wrongKey.textContent = "Already tried that one...";
+                }
+
+            if (computerChoice === currentWord.join('')) {
+                alert("You win! The winning word was: " + computerChoice);
+                location.reload();
+            }
+
+
+            // // checking to see if guess matches letter in word - if not, it pushes the letter to the guess div and decrements attempts
+            if (computerChoice.indexOf(event.key) == -1) {
+                // pushing the incorrect event key to the guess var
+                guess.push(event.key);
+                // decrementing attempts
+                attemptNumber--;
+                // pushing the attempts number to the att var which grabs the attemps div
+                att.textContent = attempts;
+                // pushes the incorrect event key to the guesses variable which grabs the guessDiv
+                guesses.textContent = guess.join(', ');
+            }
+
+
+
+
+
+
+
+
+
+
+
+        }
     </script>
 
 </body>
